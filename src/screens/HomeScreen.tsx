@@ -1,13 +1,28 @@
 import { View, ScrollView, Image, Text, TextInput } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Categories from "../components/Categories";
+import { getCategories } from "../api/endpoints";
 
 const HomeScreen = () => {
   const [activeCategory, setActiveCategory] = useState("Beef");
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+  const fetchCategories = async () => {
+    try {
+      const response = await getCategories();
+      console.log(response.categories, " response [Categories.tsx]");
+      setCategories(response.categories);
+    } catch (err) {
+      console.error(err, " err [Categories.tsx]");
+    }
+  };
   return (
     <View className="flex-1 bg-white">
       <StatusBar style="dark" />
@@ -61,10 +76,13 @@ const HomeScreen = () => {
 
         {/* categories */}
         <View>
-          <Categories
-            activeCategory={activeCategory}
-            setActiveCategory={setActiveCategory}
-          />
+          {categories.length > 0 && (
+            <Categories
+              categories={categories}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+            />
+          )}
         </View>
       </ScrollView>
     </View>

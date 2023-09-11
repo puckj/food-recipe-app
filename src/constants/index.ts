@@ -1,4 +1,4 @@
-//DUMMY DATA
+export const API_BASE_URL = "https://www.themealdb.com";
 
 export const categoryData = [
   {
@@ -14,6 +14,7 @@ export const categoryData = [
     image: "https://themealdb.com/images/category/dessert.png",
   },
 ];
+//DUMMY DATA
 export const mealData = [
   {
     name: "Shakshuka",
