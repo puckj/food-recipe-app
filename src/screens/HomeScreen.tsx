@@ -29,8 +29,8 @@ const HomeScreen = () => {
       console.error(error, "fetchCategories error! [Categories.tsx]");
     }
   };
-  const fetchRecipes = async (categoryName: string = "Beef") => {
-    setIsLoadingRecipes(true)
+  const fetchRecipes = async (categoryName: string) => {
+    setIsLoadingRecipes(true);
     try {
       const response = await getFilterByMainIngredient({
         ingredientName: categoryName,
@@ -40,7 +40,7 @@ const HomeScreen = () => {
     } catch (error) {
       console.error(error, "fetchRecipes error! [Categories.tsx]");
     }
-    setIsLoadingRecipes(false)
+    setIsLoadingRecipes(false);
   };
   return (
     <View className="flex-1 bg-white">

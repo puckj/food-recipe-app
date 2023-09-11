@@ -6,6 +6,10 @@ export const getCategories = async () => {
 
 export const getFilterByMainIngredient = async (
   props: GetFilterByMainIngredientProps
-) => {  
+) => {
   return GET(`/filter.php?i=${props.ingredientName}`);
+};
+
+export const getMealDetailById = async (props: GetMealDetailByIdProps) => {
+  return GET(`/lookup.php?i=${props.mealId}`);
 };

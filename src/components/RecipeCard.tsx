@@ -1,6 +1,8 @@
 import { Image, Pressable, Text } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackNavigationProp } from "../navigation/types";
 
 type Props = {
   item: any;
@@ -8,6 +10,7 @@ type Props = {
 };
 
 const RecipeCard = ({ item, index }: Props) => {
+  const navigation = useNavigation<RootStackNavigationProp>();
   const isEven = index % 2 == 0;
   return (
     <Animated.View
@@ -17,7 +20,9 @@ const RecipeCard = ({ item, index }: Props) => {
         .damping(12)}
     >
       <Pressable
-        onPress={() => console.log("test")}
+        onPress={() =>
+          navigation.navigate("RecipeDetailScreen", { idMeal: item.idMeal })
+        }
         style={{
           width: "100%",
           paddingLeft: isEven ? 0 : 8,
