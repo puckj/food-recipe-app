@@ -1,5 +1,6 @@
-export const API_BASE_URL = "https://www.themealdb.com";
+export const API_BASE_URL = "https://themealdb.com";
 
+//DUMMY DATA for UI dev
 export const categoryData = [
   {
     name: "Starter",
@@ -14,7 +15,6 @@ export const categoryData = [
     image: "https://themealdb.com/images/category/dessert.png",
   },
 ];
-//DUMMY DATA
 export const mealData = [
   {
     name: "Shakshuka",

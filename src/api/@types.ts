@@ -1,0 +1,3 @@
+type GetFilterByMainIngredientProps = {
+  ingredientName: string;
+};

@@ -5,23 +5,42 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import Categories from "../components/Categories";
-import { getCategories } from "../api/endpoints";
+import { getCategories, getFilterByMainIngredient } from "../api/endpoints";
+import Recipes from "../components/Recipes";
 
 const HomeScreen = () => {
   const [activeCategory, setActiveCategory] = useState("Beef");
   const [categories, setCategories] = useState([]);
-
+  const [recipes, setRecipes] = useState(null);
+  const [isLoadingRecipes, setIsLoadingRecipes] = useState(true);
   useEffect(() => {
     fetchCategories();
   }, []);
+  useEffect(() => {
+    fetchRecipes(activeCategory);
+  }, [activeCategory]);
+
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
-      console.log(response.categories, " response [Categories.tsx]");
+      // console.log(response.categories, " response [Categories.tsx]");
       setCategories(response.categories);
-    } catch (err) {
-      console.error(err, " err [Categories.tsx]");
+    } catch (error) {
+      console.error(error, "fetchCategories error! [Categories.tsx]");
     }
+  };
+  const fetchRecipes = async (categoryName: string = "Beef") => {
+    setIsLoadingRecipes(true)
+    try {
+      const response = await getFilterByMainIngredient({
+        ingredientName: categoryName,
+      });
+      // console.log(response.meals, " fetchRecipes");
+      setRecipes(response.meals);
+    } catch (error) {
+      console.error(error, "fetchRecipes error! [Categories.tsx]");
+    }
+    setIsLoadingRecipes(false)
   };
   return (
     <View className="flex-1 bg-white">
@@ -45,14 +64,12 @@ const HomeScreen = () => {
           <Text style={{ fontSize: hp(1.7) }} className="text-neutral-600">
             Hello, Jay!
           </Text>
-
           <Text
             style={{ fontSize: hp(3.8) }}
             className="font-semibold text-neutral-600"
           >
             Make your own food,
           </Text>
-
           <Text
             style={{ fontSize: hp(3.8) }}
             className="font-semibold text-neutral-600"
@@ -83,6 +100,10 @@ const HomeScreen = () => {
               setActiveCategory={setActiveCategory}
             />
           )}
+        </View>
+        {/* recipes */}
+        <View>
+          <Recipes recipes={recipes} isLoadingRecipes={isLoadingRecipes} />
         </View>
       </ScrollView>
     </View>
