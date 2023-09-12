@@ -1,8 +1,9 @@
-import { View, Text } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import MasonryList from "@react-native-seoul/masonry-list";
 import RecipeCard from "./RecipeCard";
-import LoadingIndicator from "./LoadingIndicator";
+import { Ionicons } from "@expo/vector-icons";
+import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 
 const Recipes = ({ recipes, isLoadingRecipes }: any) => {
   return (
@@ -14,11 +15,7 @@ const Recipes = ({ recipes, isLoadingRecipes }: any) => {
         Recipes
       </Text>
       {isLoadingRecipes === true ? (
-        <LoadingIndicator
-          style={{paddingTop: hp(13)}}
-          // className="bg-red-200"
-          size="large"
-        />
+        <ActivityIndicator style={{ paddingTop: hp(13) }} size="large" />
       ) : recipes !== null ? (
         <View>
           <MasonryList
@@ -31,9 +28,14 @@ const Recipes = ({ recipes, isLoadingRecipes }: any) => {
           />
         </View>
       ) : (
-        <Text>
-          <Text>No Recipes</Text>
-        </Text>
+        <Animated.View
+          entering={FadeIn}
+          className="flex justify-center items-center"
+          style={{ paddingTop: hp(10) }}
+        >
+          <Ionicons name="md-sad-outline" size={hp(8)} color="#a2a2a2" />
+          <Text className="text-[#a2a2a2] text-base">Receipt not found</Text>
+        </Animated.View>
       )}
     </View>
   );
