@@ -3,7 +3,7 @@ import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import MasonryList from "@react-native-seoul/masonry-list";
 import RecipeCard from "./RecipeCard";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
+import Animated, { FadeIn } from "react-native-reanimated";
 
 const Recipes = ({ recipes, isLoadingRecipes }: any) => {
   return (

@@ -1,4 +1,4 @@
-import { Image, Pressable, Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
@@ -21,7 +21,11 @@ const RecipeCard = ({ item, index }: Props) => {
     >
       <Pressable
         onPress={() =>
-          navigation.navigate("RecipeDetailScreen", { idMeal: item.idMeal })
+          navigation.navigate("RecipeDetailScreen", {
+            idMeal: item.idMeal,
+            strMeal: item.strMeal,
+            imageMeal: item.strMealThumb,
+          })
         }
         style={{
           width: "100%",
@@ -30,7 +34,7 @@ const RecipeCard = ({ item, index }: Props) => {
         }}
         className="flex justify-center mb-4 space-y-1"
       >
-        <Image
+        <Animated.Image
           source={{ uri: item.strMealThumb }}
           style={{
             width: "100%",
@@ -38,6 +42,7 @@ const RecipeCard = ({ item, index }: Props) => {
             borderRadius: 35,
           }}
           className="bg-black/5"
+          sharedTransitionTag={item.strMeal}
         />
         <Text
           style={{ fontSize: hp(1.5) }}

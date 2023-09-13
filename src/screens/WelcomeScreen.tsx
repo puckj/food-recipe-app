@@ -1,10 +1,7 @@
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  // widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp } from "../navigation/types";
@@ -45,10 +42,12 @@ const WelcomeScreen = () => {
           className="bg-white/20 rounded-full"
           style={{ padding: ringInnerPadding }}
         >
-          <Image
-            source={require("../../assets/images/welcome.png")}
-            style={{ width: hp(20), height: hp(20) }}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+            <Image
+              source={require("../../assets/images/welcome.png")}
+              style={{ width: hp(20), height: hp(20) }}
+            />
+          </TouchableOpacity>
         </Animated.View>
       </Animated.View>
 

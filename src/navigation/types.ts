@@ -6,6 +6,8 @@ export type RootStackParamList = {
   HomeScreen: undefined;
   RecipeDetailScreen: {
     idMeal: string;
+    strMeal: string;
+    imageMeal: string;
   };
 };
 
