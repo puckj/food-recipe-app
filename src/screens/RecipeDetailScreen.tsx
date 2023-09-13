@@ -9,7 +9,7 @@ import { getMealDetailById } from "../api/endpoints";
 import { Ionicons } from "@expo/vector-icons";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import OverlayActivityIndicator from "../components/OverlayActivityIndicator";
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const RecipeDetailScreen = () => {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -32,18 +32,29 @@ const RecipeDetailScreen = () => {
     setIsLoading(false);
   };
 
+  const ingredientsIndexes = (recipe: any) => {
+    if (!recipe) return [];
+    let indexes = [];
+    for (let i = 1; i <= 20; i++) {
+      if (recipe["strIngredient" + i]) {
+        indexes.push(i);
+      }
+    }
+    return indexes;
+  };
+
   return (
     <>
       <View className="flex-row absolute w-full justify-between mt-14 px-6 z-30">
         <TouchableOpacity
-          className="bg-[#ffffffe5] rounded-full p-2"
+          className="bg-[#ffffffef] rounded-full p-2"
           onPress={() => navigation.goBack()}
         >
           <Ionicons name="chevron-back" size={hp(3.8)} color="#fbbf24" />
         </TouchableOpacity>
         {!isLoading && (
           <TouchableOpacity
-            className="bg-[#ffffffe5] rounded-full p-2"
+            className="bg-[#ffffffef] rounded-full p-2"
             onPress={() => setIsFavourite(!isFavourite)}
           >
             <Ionicons
@@ -57,47 +68,145 @@ const RecipeDetailScreen = () => {
       {isLoading ? (
         <OverlayActivityIndicator visible={true} />
       ) : (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* IMAGE AND TITLE  */}
           <Image
             source={{ uri: recipeDetail.strMealThumb }}
             style={{ height: hp(50) }}
           />
-          <View className="px-4 space-y-2 pt-8">
-            <Text
-              style={{ fontSize: hp(3) }}
-              className="font-bold flex-1 text-neutral-700"
-            >
-              {recipeDetail.strMeal}
-            </Text>
-            <Text
-              style={{ fontSize: hp(2) }}
-              className="font-medium flex-1 text-neutral-500"
-            >
-              {recipeDetail.strArea}
-            </Text>
-          </View>
+          <View className="px-4 pt-5 space-y-3 pb-10">
+            <View className="space-y-2">
+              <Text
+                style={{ fontSize: hp(3.8) }}
+                className="font-bold flex-1 text-neutral-700"
+              >
+                {recipeDetail.strMeal}
+              </Text>
+              <Text
+                style={{ fontSize: hp(2.2) }}
+                className="font-medium flex-1 text-neutral-500"
+              >
+                {recipeDetail.strArea}
+              </Text>
+            </View>
 
-          {/* misc */}
-          {/* <View className="flex-row justify-around">
-            <View className="">
-              <View className="bg-white">
-                <AntDesign name="clockcircleo" size={24} color="black" />
+            {/* MISC */}
+            <View className="flex-row justify-around">
+              <View className="flex-row rounded-full bg-amber-300 p-2">
+                <View
+                  style={{ height: hp(4.5), width: hp(4.5) }}
+                  className="bg-white rounded-full flex items-center justify-center"
+                >
+                  <MaterialCommunityIcons
+                    name="food-fork-drink"
+                    size={hp(3)}
+                    color="#525252"
+                  />
+                </View>
+                <View className="flex items-center justify-center px-3">
+                  <Text style={{ fontSize: hp(1.3), color: "#525252" }}>
+                    Category
+                  </Text>
+                  <Text
+                    style={{ fontSize: hp(1.8) }}
+                    className="text-base font-medium"
+                  >
+                    {recipeDetail.strCategory}
+                  </Text>
+                </View>
               </View>
-              <View>
-                <Text></Text>
-                <Text></Text>
+              <View className="flex-row rounded-full bg-amber-300 p-2">
+                <View
+                  style={{ height: hp(4.5), width: hp(4.5) }}
+                  className="bg-white rounded-full flex items-center justify-center"
+                >
+                  <MaterialCommunityIcons
+                    name="tag-multiple"
+                    size={hp(3)}
+                    color="#525252"
+                  />
+                </View>
+                <View className="flex items-center justify-center px-3">
+                  <Text style={{ fontSize: hp(1.3), color: "#525252" }}>
+                    Tag
+                  </Text>
+                  <Text
+                    style={{ fontSize: hp(1.8) }}
+                    className="text-base font-medium"
+                  >
+                    {recipeDetail.strTags
+                      ? recipeDetail.strTags.length > 15
+                        ? recipeDetail.strTags.slice(0, 15) + "..."
+                        : recipeDetail.strTags
+                      : "-"}
+                  </Text>
+                </View>
               </View>
             </View>
-            <View>
-              <View className="bg-white">
-                <Ionicons name="people" size={24} color="black" />
-              </View>
-              <View>
-                <Text></Text>
-                <Text></Text>
+
+            {/* INGREDIENTS */}
+            <View className="flex-1 space-y-3 pt-3">
+              <Text
+                style={{ fontSize: hp(2.5) }}
+                className="font-bold flex-1 text-neutral-700"
+              >
+                Ingredients
+              </Text>
+              <View className="space-y-2 ml-3">
+                {ingredientsIndexes(recipeDetail).map((i) => {
+                  console.log(i);
+                  return (
+                    <View key={i} className="flex-row space-x-4">
+                      <View
+                        style={{ height: hp(1.5), width: hp(1.5) }}
+                        className="bg-amber-300 rounded-full"
+                      />
+                      <View className="flex-row space-x-2">
+                        <Text
+                          style={{ fontSize: hp(1.7) }}
+                          className="font-extrabold text-neutral-600"
+                        >
+                          {recipeDetail["strMeasure" + i]}
+                        </Text>
+                        <Text
+                          style={{ fontSize: hp(1.7) }}
+                          className="font-medium text-neutral-600"
+                        >
+                          {recipeDetail["strIngredient" + i]}
+                        </Text>
+                      </View>
+                    </View>
+                  );
+                })}
               </View>
             </View>
-          </View> */}
+
+            {/* INSTRUCTIONS */}
+            <View className="flex-1 space-y-3 pt-3">
+              <Text
+                style={{ fontSize: hp(2.5) }}
+                className="font-bold flex-1 text-neutral-700"
+              >
+                Instructions
+              </Text>
+              <Text style={{ fontSize: hp(1.6) }} className="text-neutral-700">
+                {recipeDetail.strInstructions}
+              </Text>
+            </View>
+
+            {/*YOUTUBE VIDEO*/}
+            {recipeDetail.strYoutube && (
+              <View className="pt-3">
+                <Text
+                  style={{ fontSize: hp(2.5) }}
+                  className="font-bold flex-1 text-neutral-700"
+                >
+                  Recipe Video
+                </Text>
+                <View></View>
+              </View>
+            )}
+          </View>
         </ScrollView>
       )}
     </>
